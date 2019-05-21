@@ -25,36 +25,35 @@ List* create_element(char surname[50], double score)
 	return element;
 }
 
-void add_end(List** head, char surname[50], double score)
+void add_end(List** head, List *el)
 {
 	if (*head == NULL)
 	{
-		*head = create_element(surname, score);
+		*head = el;
 	}
 	else
 	{
 		List* temp = *head;
-		List* new_element = create_element(surname, score);
 
 		while (temp->next != NULL)
 		{
 			temp = temp->next;
 		}
-		temp->next = new_element;
+		temp->next = el;
 	}
 }
 
-void add_start(List** head, char surname[50], double score)
+void add_start(List** head, List* el)
 {
 	if (*head == NULL)
 	{
-		*head = create_element(surname, score);
+		*head = el;
 	}
 	else
 	{
-		List* new_element = create_element(surname, score);
-		new_element->next = *head;
-		*head = new_element;
+		List* new_element = el;
+		el->next = *head;
+		*head = el;
 	}
 }
 
@@ -179,18 +178,18 @@ void display(List* head)
 	}
 }
 
-void display_by_surname(List* head, char surname[50])
+List* search_by_surname(List* head, char surname[50])
 {
 	List* temp = head;
-	while (temp)
+	while (temp->s)
 	{
-		if(!strcmp(temp->data.surname, surname))
+		if (!strcmp(temp->data.surname, surname))
 			cout << "Surname: " << temp->data.surname << ", score: " << temp->data.score << endl;
 		temp = temp->next;
 	}
 }
 
-void display_by_score(List* head, double score)
+List* search_by_score(List* head, double score)
 {
 	List* temp = head;
 	while (temp)
@@ -205,120 +204,17 @@ enum Commands { ADD_END = 0, ADD_START, ADD_MIDDLE, DELETE_END, DELETE_START, DE
 
 int main()
 {
-	char surname[50];
-	double score;
-	int command;
-	int count;
 
 	List* head = NULL;
 
-	cout << "[COMMANDS]: ADD_END = 0, ADD_START = 1, ADD_MIDDLE = 2, DELETE_END = 3, DELETE_START = 4, DELETE_MIDDLE = 5, LENGTH = 6, DISPLAY = 7, DISPLAY_BY_SURNAME = 8, DISPLAY_BY_SCORE = 9";
-	cout << endl;
-	cout << "COMMAND: ";
-	cin >> command;
+	List* el1 = create_element("FEDORENKO", 100);
+	List* el2 = create_element("KONDRATUK", 100);
 
-	while (command != -666)
-	{
+	add_end(&head, el1);
+	add_start(&head, el2);
 
-		switch (command)
-		{
-		case ADD_END:
-			cout << "Count of student: ";
-			cin >> count;
-
-			for (int i = 0; i < count; i++)
-			{
-				cout << "Surname: ";
-				cin >> surname;
-				cout << "Score: ";
-				cin >> score;
-
-				add_end(&head, surname, score);
-			}
-			break;
-
-		case ADD_START:
-			cout << "Count of student: ";
-			cin >> count;
-
-			for (int i = 0; i < count; i++)
-			{
-				cout << "Surname: ";
-				cin >> surname;
-				cout << "Score: ";
-				cin >> score;
-
-				add_start(&head, surname, score);
-			}
-			break;
-
-		case ADD_MIDDLE:
-			cout << "Count of student: ";
-			cin >> count;
-
-			for (int i = 0; i < count; i++)
-			{
-				cout << "Surname: ";
-				cin >> surname;
-				cout << "Score: ";
-				cin >> score;
-
-				add_middle(&head, surname, score);
-			}
-			break;
-
-		case DELETE_START:
-			cout << "Count of student: ";
-			cin >> count;
-
-			for (int i = 0; i < count; i++)
-				delete_start(&head);
-			break;
-
-		case DELETE_END:
-			cout << "Count of student: ";
-			cin >> count;
-
-			for (int i = 0; i < count; i++)
-				delete_end(&head);
-			break;
-
-		case DELETE_MIDDLE:
-			cout << "Count of student: ";
-			cin >> count;
-
-			for (int i = 0; i < count; i++)
-				delete_middle(&head);
-			break;
-
-		case LENGTH:
-			cout << "LIST LENGTH: " << length(head) << endl; 
-			break;
-
-		case DISPLAY:
-			display(head);
-			cout << endl;
-			break;
-
-		case DISPLAY_BY_SURNAME:
-			cout << "Surname: ";
-			cin >> surname;
-			display_by_surname(head, surname);
-			break;
-
-		case DISPLAY_BY_SCORE:
-			cout << "Score: ";
-			cin >> score;
-			display_by_score(head, score);
-			break;
-
-		default:
-			break;
-		}
-
-		cout << "Command: ";
-		cin >> command;
-	}
+	display(head);
+	
 
 	system("PAUSE");
 	return 0;
